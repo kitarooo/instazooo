@@ -23,9 +23,17 @@ public class Post {
     String location;
     int likes;
 
+    @Column
+    @ElementCollection(targetClass = String.class)
     Set<String> likedUsers;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     User user;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "post", orphanRemoval = true)
     List<Comment> comments;
+
+    @Column(updatable = false)
     LocalDateTime createdDate;
 
     @PrePersist
